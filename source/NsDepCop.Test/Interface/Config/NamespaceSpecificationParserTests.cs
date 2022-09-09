@@ -24,6 +24,13 @@ namespace Codartis.NsDepCop.Test.Interface.Config
         }
 
         [Theory]
+        [InlineData("A.*.B.*")]
+        public void Parse_NamespacePattern(string namespaceTreeString)
+        {
+            NamespaceSpecificationParser.Parse(namespaceTreeString).Should().Be(new NamespacePattern(namespaceTreeString));
+        }
+
+        [Theory]
         [InlineData("..")]
         [InlineData(".A")]
         [InlineData("A.")]

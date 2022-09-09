@@ -15,9 +15,12 @@ namespace Codartis.NsDepCop.Config
         /// </remarks>
         public static NamespaceSpecification Parse(string namespaceSpecificationAsString)
         {
-            return namespaceSpecificationAsString.EndsWith(NamespaceTree.AnyNamespaceMarker) 
-                ? (NamespaceSpecification) new NamespaceTree(namespaceSpecificationAsString) 
-                : new Namespace(namespaceSpecificationAsString);
+            var wildcardPos = namespaceSpecificationAsString.IndexOf(NamespaceTree.AnyNamespaceMarker);
+            return wildcardPos > 0 && wildcardPos < namespaceSpecificationAsString.Length - 1
+                ? (NamespaceSpecification)new NamespacePattern(namespaceSpecificationAsString)
+                : wildcardPos == namespaceSpecificationAsString.Length - 1
+                    ? (NamespaceSpecification)new NamespaceTree(namespaceSpecificationAsString)
+                    : new Namespace(namespaceSpecificationAsString);
         }
     }
 }
